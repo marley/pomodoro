@@ -1,4 +1,4 @@
-import { format } from "date-fns";
+// import { format } from "date-fns";
 import {
   INCREMENT,
   DECREMENT,
@@ -7,6 +7,7 @@ import {
   TICK_TOCK,
   RESET,
 } from "../actionTypes";
+const { addSeconds, addMinutes, format } = require("date-fns");
 
 const initialState = {
   started: false,
@@ -20,21 +21,14 @@ const initialState = {
 
 // TODO need a function that will switch sessions once previous one is finished
 
-// const updateTimeLeft = (state, type) => {
-//   let { m, s } = state.timeLeft.split(":");
-//   let mVal = parseInt(m);
-//   if (type === "+") {
-//     mVal += 1;
-//   } else {
-//     mVal -= 1;
-//   }
-//   return `${mVal}:${s}`;
-// };
-
-// const updateTimeLeft = (state, newTime) => {
-//   let timeLeft = state.
-//   newTime = state[session]
-// };
+const updateStartTime = (newStartTime, timeLeft) => {
+  let [minutesLeft, secondsLeft] = timeLeft
+    .split(":")
+    .map((numStr) => parseInt(numStr));
+  let startTime = addMinutes(newStartTime, minutesLeft);
+  startTime = addSeconds(startTime, secondsLeft + 1); // add 1 to make up for display not updating right away
+  return startTime;
+};
 
 const pomodoroReducer = (state = initialState, action) => {
   console.log(state);
@@ -64,18 +58,19 @@ const pomodoroReducer = (state = initialState, action) => {
     case START_TIMER: {
       console.log(`Start timer for ${state.session}!`);
       let timerSelector = action.timerSelector;
-      let startTime = action.payload;
+      let startTime = updateStartTime(action.payload, state.timeLeft);
       return { ...state, started: true, timerSelector, startTime };
     }
     case STOP_TIMER:
       console.log(`Stop timer for ${state.session} at ${action.payload}!`);
-      let stopTime = action.payload; // TODO we will need this when we start the timer again
+      // let stopTime = action.payload; // TODO we will need this when we start the timer again
+      // let startTime = state.startTime - action.payload.getTime();
       return { ...state, started: false };
     case TICK_TOCK: {
       console.log("tick tock");
       console.log(action.payload);
-      console.log(`${state.startTime.getTime()} - ${action.payload.getTime()}`);
-      var timeDiff = state.startTime.getTime() - action.payload.getTime(); // get your number
+      console.log(`${state.startTime} - ${action.payload.getTime()}`);
+      var timeDiff = state.startTime - action.payload.getTime(); // get your number
       var timeDiffInMins = format(new Date(timeDiff), "mm:ss"); // create Date object
       let timeLeft = timeDiffInMins;
       // 25 - (state.startTime.getTime() - action.payload.getTime());
