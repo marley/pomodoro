@@ -1,11 +1,50 @@
-function Control({ type }) {
-  let icon = type === "reset" ? "undo-alt" : "play";
-  // logic to pick pause
-  return (
-    <button id={type} className="btn">
-      <i class={`fas fa-${icon}`}></i>
-    </button>
-  );
+import React from "react";
+import { connect } from "react-redux";
+import { getStartStop } from "../redux/selectors";
+import { startTimer, stopTimer, reset } from "../redux/actions";
+
+class Control extends React.Component {
+  constructor(props) {
+    super(props);
+    this.handleClick = this.handleClick.bind(this);
+  }
+
+  handleClick = () => {
+    if (this.props.type === "reset") {
+      this.props.stopTimer();
+      this.props.reset();
+    } else {
+      if (this.props.started === true) {
+        this.props.stopTimer();
+      } else {
+        this.props.startTimer();
+      }
+    }
+  };
+
+  render() {
+    let icon = this.props.type === "reset" ? "undo-alt" : "play";
+    if (this.props.started === true) {
+      icon = "pause";
+    }
+    return (
+      <button id={this.props.type} className="btn" onClick={this.handleClick}>
+        <i className={`fas fa-${icon}`}></i>
+      </button>
+    );
+  }
 }
 
-export default Control;
+const mapStateToProps = (state) => {
+  const started = getStartStop(state);
+  return { started };
+};
+
+const mapDispatchToProps = (dispatch) => {
+  return {
+    startTimer: () => dispatch(startTimer()),
+    stopTimer: () => dispatch(stopTimer()),
+    reset: () => dispatch(reset()),
+  };
+};
+export default connect(mapStateToProps, mapDispatchToProps)(Control);

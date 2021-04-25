@@ -7,3 +7,4 @@ This project was bootstrapped with [Create React App](https://github.com/faceboo
 - [ ] add mobile breakpoint for dials and title (put above timer)
 
 # Helpful Links
+- I looked at [awwwards](https://www.awwwards.com/websites/?tag=clean&category=games-entertainment) and [dribbble](https://dribbble.com/tags/countdown_timer) for design inspo.

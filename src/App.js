@@ -22,8 +22,8 @@ function App() {
         <div id="timer-and-dials">
           <Timer />
           <div id="app-dials" className="d-flex flex-column">
-            <Dial title="Session" />
-            <Dial title="Break" />
+            <Dial title="session" />
+            <Dial title="break" />
           </div>
         </div>
         <div className="d-flex justify-content-center">
