@@ -1,6 +1,10 @@
-# Getting Started with Create React App
+# About
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+A clean, customizable pomodoro timer to help you set up quality, distraction-free focus time.
+
+The [Pomodoro Technique](https://en.wikipedia.org/wiki/Pomodoro_Technique) is a method of time management where you divide your work into long-ish focus blocks (e.g. 25 minutes) with shorter breaks in between (e.g. 5 minutes). Every 4 pomodoros, you should take a longer break (e.g. 10 min).
+
+This webapp is a clean, customizable pomodoro timer This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
 # Todo
 
