@@ -11,7 +11,7 @@ const initialState = {
   breakTime: 5,
   started: false,
   session: "focusTime",
-  timeLeft: 25,
+  timeLeft: "25:00",
 };
 
 // TODO need a function that will switch sessions once previous one is finished

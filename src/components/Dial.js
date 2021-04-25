@@ -28,6 +28,10 @@ class Dial extends React.Component {
   render() {
     let title = this.props.title;
     let name = this.props.title === "session" ? "Focus" : "Break";
+    let sessionLength =
+      this.props.title === "session"
+        ? this.props.focusTime
+        : this.props.breakTime;
     return (
       <div
         id={`${title}-dial-div`}
@@ -45,7 +49,7 @@ class Dial extends React.Component {
           >
             -
           </button>
-          <div id={`${title}-length`}>5</div>
+          <div id={`${title}-length`}>{sessionLength}</div>
           <button
             id={`${title}-increment`}
             className="btn"
