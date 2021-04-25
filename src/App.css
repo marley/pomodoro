@@ -1,38 +1,54 @@
-.App {
-  text-align: center;
+#app-container {
+  height: 100vh;
+  padding: 0 5% 0 5%;
 }
 
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
+#app-title {
+  position: fixed;
+  bottom: 0;
 }
 
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
+#timer-and-dials {
+  display: grid;
+  grid-template-columns: 1fr 170px 1fr;
+  grid-template-areas: ". timer dials";
+  width: 100%;
 }
 
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
+#timer-div {
+  border: 2px solid black;
+  grid-area: timer;
+  margin: 3%;
+  padding: 15px;
+}
+
+#time-left {
+  font-size: 36px;
+}
+
+#app-dials {
+  grid-area: dials;
+  margin: 3%;
+}
+
+.dial {
+  width: 150px;
+}
+
+#session-increment,
+#break-increment,
+#session-decrement,
+#break-decrement {
   color: white;
 }
 
-.App-link {
-  color: #61dafb;
+#session-dial-div:hover,
+#break-dial-div:hover {
+  color: var(--bs-light);
+  background-color: var(--bs-dark);
 }
 
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+#session-label,
+#break-label {
+  text-align: center;
 }

@@ -1,13 +1,20 @@
 function Dial({ title }) {
   return (
-    <div>
-      <div id={`${title.toLowerCase()}-label`} className="App">
+    <div
+      id={`${title.toLowerCase()}-dial-div`}
+      className="dial d-flex flex-column align-items-center"
+    >
+      <div id={`${title.toLowerCase()}-label`} className="d-flex">
         {title} Length
       </div>
-      <div>
-        <button id={`${title.toLowerCase()}-decrement`}>-</button>
+      <div className="d-flex flex-row align-items-center">
+        <button id={`${title.toLowerCase()}-decrement`} className="btn">
+          -
+        </button>
         <div id={`${title.toLowerCase()}-length`}>5</div>
-        <button id={`${title.toLowerCase()}-increment`}>+</button>
+        <button id={`${title.toLowerCase()}-increment`} className="btn">
+          +
+        </button>
       </div>
     </div>
   );
