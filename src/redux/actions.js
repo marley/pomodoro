@@ -10,13 +10,13 @@ import {
 export const increment = (dial) => ({
   // dial = "session" or "break"
   type: INCREMENT,
-  payload: dial,
+  payload: `${dial}Time`,
 });
 
 export const decrement = (dial) => ({
   // dial = "session" or "break"
   type: DECREMENT,
-  payload: dial,
+  payload: `${dial}Time`,
 });
 
 export const startTimer = () => {

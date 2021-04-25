@@ -19,7 +19,25 @@ const initialState = {
   startTime: null,
 };
 
-// TODO need a function that will switch sessions once previous one is finished
+const updateTimeLeft = (type, timeBlock, state) => {
+  if (state.session === timeBlock) {
+    // only update timeLeft if time changing corresponds to the current session
+    let [minutesLeft, secondsLeft] = state.timeLeft.split(":");
+    let minutesLeftVal = parseInt(minutesLeft);
+    if (type === "+") {
+      minutesLeftVal += 1;
+    } else {
+      minutesLeftVal -= 1;
+    }
+    if (minutesLeftVal.length === 1) {
+      minutesLeft = `0${minutesLeftVal}`;
+    } else {
+      minutesLeft = `${minutesLeftVal}`;
+    }
+    return `${minutesLeft}:${secondsLeft}`;
+  }
+  return state.timeLeft;
+};
 
 const updateStartTime = (newStartTime, timeLeft) => {
   let [minutesLeft, secondsLeft] = timeLeft
@@ -35,23 +53,25 @@ const pomodoroReducer = (state = initialState, action) => {
   switch (action.type) {
     case INCREMENT: {
       console.log(`Increment ${action.payload}`);
-      if (action.payload === "focus" && state.focusTime < 60) {
-        let newTime = state.focusTime + 1;
-        return { ...state, focusTime: newTime };
-      } else if (action.payload === "break" && state.breakTime < 60) {
-        let newTime = state.breakTime + 1;
-        return { ...state, breakTime: newTime };
+      if (state[action.payload] < 60) {
+        let newTime = state[action.payload] + 1;
+        let timeLeft = updateTimeLeft("+", action.payload, state);
+        if (action.payload === "focusTime") {
+          return { ...state, focusTime: newTime, timeLeft };
+        }
+        return { ...state, breakTime: newTime, timeLeft };
       }
       return { ...state };
     }
     case DECREMENT: {
       console.log(`Decrement ${action.payload}`);
-      if (action.payload === "focus" && state.focusTime > 1) {
-        let newTime = state.focusTime - 1;
-        return { ...state, focusTime: newTime };
-      } else if (action.payload === "break" && state.breakTime > 1) {
-        let newTime = state.breakTime - 1;
-        return { ...state, breakTime: newTime };
+      if (state[action.payload] > 1) {
+        let newTime = state[action.payload] - 1;
+        let timeLeft = updateTimeLeft("-", action.payload, state);
+        if (action.payload === "focusTime") {
+          return { ...state, focusTime: newTime, timeLeft };
+        }
+        return { ...state, breakTime: newTime, timeLeft };
       }
       return { ...state };
     }
@@ -70,12 +90,21 @@ const pomodoroReducer = (state = initialState, action) => {
       console.log("tick tock");
       console.log(action.payload);
       console.log(`${state.startTime} - ${action.payload.getTime()}`);
+      let timeLeft = state.timeLeft;
+      let session = state.session;
+      if (state.timeLeft === "00:00") {
+        session = state.session === "focusTime" ? "breakTime" : "focusTime"; // update session to next
+        timeLeft = `${state[session]}:00`;
+      }
       var timeDiff = state.startTime - action.payload.getTime(); // get your number
       var timeDiffInMins = format(new Date(timeDiff), "mm:ss"); // create Date object
-      let timeLeft = timeDiffInMins;
+      timeLeft = timeDiffInMins;
       // 25 - (state.startTime.getTime() - action.payload.getTime());
       // let timeLeft = state.timeLeft - 1; // TODO use datetime to decrement second
-      // let session = state.session;
+      if (timeLeft === "00:00") {
+        // TODO beep beep beep!
+        console.log("Beep beep beep!");
+      }
       // if (timeLeft === 0) {
       //   // TODO use datetime to do comparison
       //   // TODO beep beep beep!
@@ -86,7 +115,7 @@ const pomodoroReducer = (state = initialState, action) => {
       //   timeLeft = session === "focusTime" ? "25:00" : "05:00";
       // }
       // return { ...state, session, timeLeft };
-      return { ...state, timeLeft };
+      return { ...state, session, timeLeft };
     }
     case RESET: {
       console.log(`Reset timer for ${state.session}!`);
