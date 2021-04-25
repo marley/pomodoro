@@ -1,6 +1,6 @@
 # About
 
-A clean, customizable pomodoro timer to help you set up quality, distraction-free focus time.
+A clean, customizable pomodoro timer to help you set up distraction-free focus time.
 
 The [Pomodoro Technique](https://en.wikipedia.org/wiki/Pomodoro_Technique) is a method of time management where you divide your work into long-ish focus blocks (e.g. 25 minutes) with shorter breaks in between (e.g. 5 minutes). Every 4 pomodoros, you should take a longer break (e.g. 10 min).
 
