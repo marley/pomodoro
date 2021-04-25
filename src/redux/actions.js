@@ -48,6 +48,13 @@ export const tickTock = () => ({
   payload: new Date(),
 });
 
-export const reset = () => ({
-  type: RESET,
-});
+export const reset = () => {
+  return (dispatch, getState) => {
+    dispatch({
+      type: RESET,
+      payload: new Date(),
+    });
+
+    clearInterval(getState().timerSelector);
+  };
+};
