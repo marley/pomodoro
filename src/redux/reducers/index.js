@@ -101,7 +101,6 @@ const pomodoroReducer = (state = initialState, action) => {
       let timeBlock = state.timeBlock;
       if (state.timeLeft === "00:00") {
         timeBlock = state.timeBlock === "focusTime" ? "breakTime" : "focusTime"; // update to next timeBlock
-        console.log(`updated! ${timeBlock}`);
         if (state[timeBlock] < 10) {
           timeLeft = `0${state[timeBlock]}:00`;
         } else {
@@ -112,10 +111,6 @@ const pomodoroReducer = (state = initialState, action) => {
       }
       let timeDiff = state.startTime - action.payload.getTime();
       timeLeft = format(new Date(timeDiff), "mm:ss");
-      if (timeLeft === "00:00") {
-        // TODO beep beep beep!
-        console.log("Beep beep beep!");
-      }
       return { ...state, timeBlock, timeLeft };
     }
     case RESET: {
