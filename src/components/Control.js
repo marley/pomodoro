@@ -11,7 +11,6 @@ class Control extends React.Component {
 
   handleClick = () => {
     if (this.props.type === "reset") {
-      this.props.stopTimer();
       this.props.reset();
     } else {
       if (this.props.started === true) {
@@ -24,7 +23,7 @@ class Control extends React.Component {
 
   render() {
     let icon = this.props.type === "reset" ? "undo-alt" : "play";
-    if (this.props.started === true) {
+    if (this.props.started === true && icon === "play") {
       icon = "pause";
     }
     return (

@@ -32,6 +32,8 @@ class Dial extends React.Component {
       this.props.title === "session"
         ? this.props.focusTime
         : this.props.breakTime;
+    console.log({ sessionLength });
+
     return (
       <div
         id={`${title}-dial-div`}
