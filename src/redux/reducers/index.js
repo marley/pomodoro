@@ -13,15 +13,15 @@ const initialState = {
   started: false,
   focusTime: 25,
   breakTime: 5,
-  session: "focusTime",
+  timeBlock: "focusTime",
   timeLeft: "25:00",
   timerSelector: null,
   startTime: null,
 };
 
 const updateTimeLeft = (type, timeBlock, state) => {
-  if (state.session === timeBlock) {
-    // only update timeLeft if time changing corresponds to the current session
+  if (state.timeBlock === timeBlock) {
+    // only update timeLeft if time changing corresponds to the current timeBlock
     let [minutesLeft, secondsLeft] = state.timeLeft.split(":");
     let minutesLeftVal = parseInt(minutesLeft);
     if (type === "+") {
@@ -86,28 +86,29 @@ const pomodoroReducer = (state = initialState, action) => {
       return { ...state };
     }
     case START_TIMER: {
-      console.log(`Start timer for ${state.session}!`);
+      console.log(`Start timer for ${state.timeBlock}!`);
       let timerSelector = action.timerSelector;
       let startTime = updateStartTime(action.payload, state.timeLeft);
       return { ...state, started: true, timerSelector, startTime };
     }
     case STOP_TIMER:
-      console.log(`Stop timer for ${state.session} at ${action.payload}!`);
+      console.log(`Stop timer for ${state.timeBlock} at ${action.payload}!`);
       // let stopTime = action.payload; // TODO we will need this when we start the timer again
       // let startTime = state.startTime - action.payload.getTime();
       return { ...state, started: false };
     case TICK_TOCK: {
       let timeLeft = state.timeLeft;
-      let session = state.session;
+      let timeBlock = state.timeBlock;
       if (state.timeLeft === "00:00") {
-        session = state.session === "focusTime" ? "breakTime" : "focusTime"; // update to next session
-        if (state[session] < 10) {
-          timeLeft = `0${state[session]}:00`;
+        timeBlock = state.timeBlock === "focusTime" ? "breakTime" : "focusTime"; // update to next timeBlock
+        console.log(`updated! ${timeBlock}`);
+        if (state[timeBlock] < 10) {
+          timeLeft = `0${state[timeBlock]}:00`;
         } else {
-          timeLeft = `${state[session]}:00`;
+          timeLeft = `${state[timeBlock]}:00`;
         }
-        let startTime = addMinutes(new Date(), state[session]); // need this since start time is usually set by clicking "start_stop"
-        return { ...state, session, timeLeft, startTime };
+        let startTime = addMinutes(new Date(), state[timeBlock]); // need this since start time is usually set by clicking "start_stop"
+        return { ...state, timeBlock, timeLeft, startTime };
       }
       let timeDiff = state.startTime - action.payload.getTime();
       timeLeft = format(new Date(timeDiff), "mm:ss");
@@ -115,16 +116,16 @@ const pomodoroReducer = (state = initialState, action) => {
         // TODO beep beep beep!
         console.log("Beep beep beep!");
       }
-      return { ...state, session, timeLeft };
+      return { ...state, timeBlock, timeLeft };
     }
     case RESET: {
-      console.log(`Reset timer for ${state.session}!`);
+      console.log(`Reset timer for ${state.timeBlock}!`);
       return {
         ...state,
         started: false,
         breakTime: 5,
         focusTime: 25,
-        session: "focusTime",
+        timeBlock: "focusTime",
         timeLeft: "25:00",
       };
     }
