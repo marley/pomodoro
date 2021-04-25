@@ -34,9 +34,11 @@ const updateTimeLeft = (type, timeBlock, state) => {
     } else {
       minutesLeft = `${minutesLeftVal}`;
     }
-    return `${minutesLeft}:${secondsLeft}`;
+    let timeLeft = `${minutesLeft}:${secondsLeft}`;
+    let startTime = updateStartTime(new Date(), timeLeft);
+    return { timeLeft, startTime };
   }
-  return state.timeLeft;
+  return { timeLeft: state.timeLeft, startTime: state.startTime };
 };
 
 const updateStartTime = (newStartTime, timeLeft) => {
@@ -55,11 +57,15 @@ const pomodoroReducer = (state = initialState, action) => {
       console.log(`Increment ${action.payload}`);
       if (state[action.payload] < 60) {
         let newTime = state[action.payload] + 1;
-        let timeLeft = updateTimeLeft("+", action.payload, state);
+        let { timeLeft, startTime } = updateTimeLeft(
+          "+",
+          action.payload,
+          state
+        );
         if (action.payload === "focusTime") {
-          return { ...state, focusTime: newTime, timeLeft };
+          return { ...state, focusTime: newTime, timeLeft, startTime };
         }
-        return { ...state, breakTime: newTime, timeLeft };
+        return { ...state, breakTime: newTime, timeLeft, startTime };
       }
       return { ...state };
     }
@@ -67,11 +73,15 @@ const pomodoroReducer = (state = initialState, action) => {
       console.log(`Decrement ${action.payload}`);
       if (state[action.payload] > 1) {
         let newTime = state[action.payload] - 1;
-        let timeLeft = updateTimeLeft("-", action.payload, state);
+        let { timeLeft, startTime } = updateTimeLeft(
+          "-",
+          action.payload,
+          state
+        );
         if (action.payload === "focusTime") {
-          return { ...state, focusTime: newTime, timeLeft };
+          return { ...state, focusTime: newTime, timeLeft, startTime };
         }
-        return { ...state, breakTime: newTime, timeLeft };
+        return { ...state, breakTime: newTime, timeLeft, startTime };
       }
       return { ...state };
     }
@@ -87,43 +97,36 @@ const pomodoroReducer = (state = initialState, action) => {
       // let startTime = state.startTime - action.payload.getTime();
       return { ...state, started: false };
     case TICK_TOCK: {
-      console.log("tick tock");
-      console.log(action.payload);
-      console.log(`${state.startTime} - ${action.payload.getTime()}`);
       let timeLeft = state.timeLeft;
       let session = state.session;
       if (state.timeLeft === "00:00") {
-        session = state.session === "focusTime" ? "breakTime" : "focusTime"; // update session to next
-        timeLeft = `${state[session]}:00`;
+        session = state.session === "focusTime" ? "breakTime" : "focusTime"; // update to next session
+        if (state[session] < 10) {
+          timeLeft = `0${state[session]}:00`;
+        } else {
+          timeLeft = `${state[session]}:00`;
+        }
+        let startTime = addMinutes(new Date(), state[session]); // need this since start time is usually set by clicking "start_stop"
+        return { ...state, session, timeLeft, startTime };
       }
-      var timeDiff = state.startTime - action.payload.getTime(); // get your number
-      var timeDiffInMins = format(new Date(timeDiff), "mm:ss"); // create Date object
-      timeLeft = timeDiffInMins;
-      // 25 - (state.startTime.getTime() - action.payload.getTime());
-      // let timeLeft = state.timeLeft - 1; // TODO use datetime to decrement second
+      let timeDiff = state.startTime - action.payload.getTime();
+      timeLeft = format(new Date(timeDiff), "mm:ss");
       if (timeLeft === "00:00") {
         // TODO beep beep beep!
         console.log("Beep beep beep!");
       }
-      // if (timeLeft === 0) {
-      //   // TODO use datetime to do comparison
-      //   // TODO beep beep beep!
-      // }
-      // if (timeLeft < 0) {
-      //   // TODO use datetime to do comparison
-      //   session = state.session === "focusTime" ? "breakTime" : "focusTime"; // update session to next
-      //   timeLeft = session === "focusTime" ? "25:00" : "05:00";
-      // }
-      // return { ...state, session, timeLeft };
       return { ...state, session, timeLeft };
     }
     case RESET: {
       console.log(`Reset timer for ${state.session}!`);
-      let started = false;
-      let focusTime = 25;
-      let breakTime = 5;
-      let timeLeft = state.session === "focusTime" ? "25:00" : "05:00";
-      return { ...state, started, breakTime, focusTime, timeLeft };
+      return {
+        ...state,
+        started: false,
+        breakTime: 5,
+        focusTime: 25,
+        session: "focusTime",
+        timeLeft: "25:00",
+      };
     }
     default: {
       console.log(`Default`);
