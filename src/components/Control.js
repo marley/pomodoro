@@ -12,9 +12,11 @@ class Control extends React.Component {
   handleClick = () => {
     if (this.props.type === "reset") {
       this.props.reset();
+      this.props.pauseBeep();
     } else {
       if (this.props.started === true) {
         this.props.stopTimer();
+        this.props.pauseBeep();
       } else {
         this.props.startTimer();
       }
