@@ -11,6 +11,7 @@ const { addSeconds, addMinutes, format } = require("date-fns");
 
 const initialState = {
   started: false,
+  pauseBeep: false,
   focusTime: 25,
   breakTime: 5,
   timeBlock: "focusTime",
@@ -63,11 +64,23 @@ const pomodoroReducer = (state = initialState, action) => {
           state
         );
         if (action.payload === "focusTime") {
-          return { ...state, focusTime: newTime, timeLeft, startTime };
+          return {
+            ...state,
+            pauseBeep: false,
+            focusTime: newTime,
+            timeLeft,
+            startTime,
+          };
         }
-        return { ...state, breakTime: newTime, timeLeft, startTime };
+        return {
+          ...state,
+          pauseBeep: false,
+          breakTime: newTime,
+          timeLeft,
+          startTime,
+        };
       }
-      return { ...state };
+      return { ...state, pauseBeep: false };
     }
     case DECREMENT: {
       console.log(`Decrement ${action.payload}`);
@@ -79,23 +92,41 @@ const pomodoroReducer = (state = initialState, action) => {
           state
         );
         if (action.payload === "focusTime") {
-          return { ...state, focusTime: newTime, timeLeft, startTime };
+          return {
+            ...state,
+            pauseBeep: false,
+            focusTime: newTime,
+            timeLeft,
+            startTime,
+          };
         }
-        return { ...state, breakTime: newTime, timeLeft, startTime };
+        return {
+          ...state,
+          pauseBeep: false,
+          breakTime: newTime,
+          timeLeft,
+          startTime,
+        };
       }
-      return { ...state };
+      return { ...state, pauseBeep: false };
     }
     case START_TIMER: {
       console.log(`Start timer for ${state.timeBlock}!`);
       let timerSelector = action.timerSelector;
       let startTime = updateStartTime(action.payload, state.timeLeft);
-      return { ...state, started: true, timerSelector, startTime };
+      return {
+        ...state,
+        started: true,
+        pauseBeep: false,
+        timerSelector,
+        startTime,
+      };
     }
     case STOP_TIMER:
-      console.log(`Stop timer for ${state.timeBlock} at ${action.payload}!`);
+      console.log(`Stop timer for ${state.timeBlock}`);
       // let stopTime = action.payload; // TODO we will need this when we start the timer again
       // let startTime = state.startTime - action.payload.getTime();
-      return { ...state, started: false };
+      return { ...state, started: false, pauseBeep: true };
     case TICK_TOCK: {
       let timeLeft = state.timeLeft;
       let timeBlock = state.timeBlock;
@@ -111,13 +142,14 @@ const pomodoroReducer = (state = initialState, action) => {
       }
       let timeDiff = state.startTime - action.payload.getTime();
       timeLeft = format(new Date(timeDiff), "mm:ss");
-      return { ...state, timeBlock, timeLeft };
+      return { ...state, pauseBeep: false, timeBlock, timeLeft };
     }
     case RESET: {
       console.log(`Reset timer for ${state.timeBlock}!`);
       return {
         ...state,
         started: false,
+        pauseBeep: true,
         breakTime: 5,
         focusTime: 25,
         timeBlock: "focusTime",
@@ -126,7 +158,7 @@ const pomodoroReducer = (state = initialState, action) => {
     }
     default: {
       console.log(`Default`);
-      return { ...state };
+      return { ...state, pauseBeep: false };
     }
   }
 };

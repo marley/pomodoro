@@ -36,7 +36,6 @@ export const stopTimer = () => {
   return (dispatch, getState) => {
     dispatch({
       type: STOP_TIMER,
-      payload: new Date(),
     });
 
     clearInterval(getState().timerSelector);
@@ -52,7 +51,6 @@ export const reset = () => {
   return (dispatch, getState) => {
     dispatch({
       type: RESET,
-      payload: new Date(),
     });
 
     clearInterval(getState().timerSelector);
