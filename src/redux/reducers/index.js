@@ -124,8 +124,6 @@ const pomodoroReducer = (state = initialState, action) => {
     }
     case STOP_TIMER:
       console.log(`Stop timer for ${state.timeBlock}`);
-      // let stopTime = action.payload; // TODO we will need this when we start the timer again
-      // let startTime = state.startTime - action.payload.getTime();
       return { ...state, started: false, pauseBeep: true };
     case TICK_TOCK: {
       let timeLeft = state.timeLeft;
