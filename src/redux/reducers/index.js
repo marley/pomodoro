@@ -30,7 +30,7 @@ const updateTimeLeft = (type, timeBlock, state) => {
     } else {
       minutesLeftVal -= 1;
     }
-    if (minutesLeftVal.length === 1) {
+    if (minutesLeftVal < 10) {
       minutesLeft = `0${minutesLeftVal}`;
     } else {
       minutesLeft = `${minutesLeftVal}`;
