@@ -18,6 +18,7 @@ Created as my final project for the [FreeCodeCamp Frontend Frameworks](https://w
   - However I had to change `getState` to `getState()` for it to work. Thanks to [this answer](https://stackoverflow.com/questions/49220379/redux-store-getstate-return-undefined-value).
   - Implementing this also taught me about [thunks](https://github.com/reduxjs/redux-thunk).
 - [How to add seconds and minutes to current time with date-fns](https://www.section.io/engineering-education/javascript-dates-manipulation-with-date-fns/).
+- [How to play audio in React](https://stackoverflow.com/questions/47616619/is-there-a-way-to-play-a-music-with-audio-in-react/47616905).
 
 ## See Also
 
