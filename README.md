@@ -10,10 +10,12 @@ Created as my final project for the [FreeCodeCamp Frontend Frameworks](https://w
 
 ### Computer
 For simplicity, the '+' and '-' buttons only appear when user mouses over "Focus Time" or "Break Time" controls.
+
 ![pomodoro-screenshot](https://user-images.githubusercontent.com/29967154/116187390-71b6c800-a6f3-11eb-8e48-84e051d310e2.png)
 
 ### Mobile
 For mobile users all controls are always visible.
+
 <img src="https://user-images.githubusercontent.com/29967154/116277322-59769580-a753-11eb-9df6-a2ebef8cf3b7.jpeg" alt="screenshot of mobile web view" width="300">
 
 # Helpful Links
