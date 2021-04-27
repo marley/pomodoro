@@ -19,6 +19,7 @@ For mobile users all controls are always visible.
 <img src="https://user-images.githubusercontent.com/29967154/116277322-59769580-a753-11eb-9df6-a2ebef8cf3b7.jpeg" alt="screenshot of mobile web view" width="300">
 
 # Future Changes
+- [ ] Add link to github
 - [ ] Add ability for user to switch to dark mode
 
 # Helpful Links
