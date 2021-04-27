@@ -68,9 +68,10 @@
     margin: 3%;
   }
 
-  #session-dial-div:hover,
-  #break-dial-div:hover {
-    color: var(--bs-light);
+  #session-dial-div,
+  #break-dial-div {
     background-color: var(--bs-dark);
+    color: var(--bs-light);
+    font-size: 26px;
   }
 }

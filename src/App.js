@@ -45,7 +45,7 @@ class App extends React.Component {
         >
           <div id="timer-and-dials">
             <Timer play={this.playBeep} />
-            <div id="app-dials" className="d-flex flex-column">
+            <div id="app-dials">
               <Dial title="session" />
               <Dial title="break" />
             </div>
