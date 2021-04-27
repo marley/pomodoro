@@ -6,7 +6,7 @@ The [Pomodoro Technique](https://en.wikipedia.org/wiki/Pomodoro_Technique) is a 
 
 Created as my final project for the [FreeCodeCamp Frontend Frameworks](https://www.freecodecamp.org/learn/front-end-libraries/) certificate. Bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
-**>>> [Try it out!](https://marley.github.io/pomodoro/)**
+**>> [Try it out!](https://marley.github.io/pomodoro/)**
 
 ### Computer
 For simplicity, the '+' and '-' buttons only appear when user mouses over "Focus Time" or "Break Time" controls.
