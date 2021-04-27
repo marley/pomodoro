@@ -64,6 +64,7 @@
   #app-dials {
     display: flex;
     flex-direction: row;
+    justify-content: space-around;
     grid-area: dials;
     margin: 3%;
   }
@@ -72,6 +73,11 @@
   #break-dial-div {
     background-color: var(--bs-dark);
     color: var(--bs-light);
+    font-size: 18px;
+  }
+
+  #timeblock-and-dials {
+    justify-content: space-around;
     font-size: 26px;
   }
 }

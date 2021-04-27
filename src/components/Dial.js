@@ -41,7 +41,10 @@ class Dial extends React.Component {
         <div id={`${title}-label`} className="d-flex">
           {name} Time
         </div>
-        <div className="d-flex flex-row align-items-center">
+        <div
+          id="timeblock-and-dials"
+          className="d-flex flex-row align-items-center"
+        >
           <button
             id={`${title}-decrement`}
             className="btn"
