@@ -79,6 +79,7 @@
   #timeblock-and-dials {
     justify-content: space-around;
     font-size: 26px;
+    width: 100%;
   }
   .control {
     font-size: 22px;
