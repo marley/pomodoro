@@ -27,6 +27,8 @@
 }
 
 #app-dials {
+  display: flex;
+  flex-direction: column;
   grid-area: dials;
   margin: 3%;
 }
@@ -59,10 +61,16 @@
     display: flex;
     flex-direction: column;
   }
-  #session-increment,
-  #break-increment,
-  #session-decrement,
-  #break-decrement {
-    color: black;
+  #app-dials {
+    display: flex;
+    flex-direction: row;
+    grid-area: dials;
+    margin: 3%;
+  }
+
+  #session-dial-div:hover,
+  #break-dial-div:hover {
+    color: var(--bs-light);
+    background-color: var(--bs-dark);
   }
 }
