@@ -29,7 +29,11 @@ class Control extends React.Component {
       icon = "pause";
     }
     return (
-      <button id={this.props.type} className="btn" onClick={this.handleClick}>
+      <button
+        id={this.props.type}
+        className="btn control"
+        onClick={this.handleClick}
+      >
         <i className={`fas fa-${icon}`}></i>
       </button>
     );

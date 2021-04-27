@@ -80,4 +80,7 @@
     justify-content: space-around;
     font-size: 26px;
   }
+  .control {
+    font-size: 22px;
+  }
 }
