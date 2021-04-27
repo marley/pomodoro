@@ -18,6 +18,9 @@ For mobile users all controls are always visible.
 
 <img src="https://user-images.githubusercontent.com/29967154/116277322-59769580-a753-11eb-9df6-a2ebef8cf3b7.jpeg" alt="screenshot of mobile web view" width="300">
 
+# Future Changes
+- [ ] Add ability for user to switch to dark mode
+
 # Helpful Links
 
 - I looked at [awwwards](https://www.awwwards.com/websites/?tag=clean&category=games-entertainment) and [dribbble](https://dribbble.com/tags/countdown_timer) for design inspo.
