@@ -6,6 +6,11 @@ The [Pomodoro Technique](https://en.wikipedia.org/wiki/Pomodoro_Technique) is a 
 
 Created as my final project for the [FreeCodeCamp Frontend Frameworks](https://www.freecodecamp.org/learn/front-end-libraries/) certificate. Bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
+>>> [Try it out!](https://marley.github.io/pomodoro/)
+
+![pomodoro-screenshot](https://user-images.githubusercontent.com/29967154/116187390-71b6c800-a6f3-11eb-8e48-84e051d310e2.png)
+
+
 # Todo
 
 - [ ] add mobile breakpoint for dials and title (put above timer)
