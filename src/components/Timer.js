@@ -1,6 +1,6 @@
 import React from "react";
 import { connect } from "react-redux";
-import { getPauseBeep, getTimeBlock, getTimeLeft } from "../redux/selectors";
+import { getTimeBlock, getTimeLeft } from "../redux/selectors";
 
 class Timer extends React.Component {
   render() {
@@ -27,9 +27,8 @@ class Timer extends React.Component {
 
 const mapStateToProps = (state) => {
   const currentTimeBlock = getTimeBlock(state);
-  const pauseBeep = getPauseBeep(state);
   const timeLeft = getTimeLeft(state);
-  return { currentTimeBlock, pauseBeep, timeLeft };
+  return { currentTimeBlock, timeLeft };
 };
 
 export default connect(mapStateToProps)(Timer);
