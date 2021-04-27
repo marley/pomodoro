@@ -1,4 +1,3 @@
-// import { format } from "date-fns";
 import {
   INCREMENT,
   DECREMENT,
@@ -7,7 +6,6 @@ import {
   TICK_TOCK,
   RESET,
 } from "../actionTypes";
-const { addSeconds, addMinutes, format } = require("date-fns");
 
 const initialState = {
   started: false,
@@ -16,38 +14,53 @@ const initialState = {
   timeBlock: "focusTime",
   timeLeft: "25:00",
   timerSelector: null,
-  startTime: null,
 };
 
 const updateTimeLeft = (type, timeBlock, state) => {
-  if (state.timeBlock === timeBlock) {
-    // only update timeLeft if time changing corresponds to the current timeBlock
-    let [minutesLeft, secondsLeft] = state.timeLeft.split(":");
-    let minutesLeftVal = parseInt(minutesLeft);
-    if (type === "+") {
-      minutesLeftVal += 1;
+  console.log("Doin the damn thing");
+  //only update timeLeft if time changing corresponds to the current timeBlock
+  if (state.timeLeft === "00:00") {
+    if (state[timeBlock] < 10) {
+      return `0${state[timeBlock]}:00`;
     } else {
-      minutesLeftVal -= 1;
+      return `${state[timeBlock]}:00`;
     }
-    if (minutesLeftVal < 10) {
-      minutesLeft = `0${minutesLeftVal}`;
-    } else {
-      minutesLeft = `${minutesLeftVal}`;
-    }
-    let timeLeft = `${minutesLeft}:${secondsLeft}`;
-    let startTime = updateStartTime(new Date(), timeLeft);
-    return { timeLeft, startTime };
   }
-  return { timeLeft: state.timeLeft, startTime: state.startTime };
-};
+  if (state.timeBlock === timeBlock) {
+    let timeLeft = state.timeLeft;
+    console.log(timeLeft);
+    let [minutesLeft, secondsLeft] = timeLeft
+      .split(":")
+      .map((numStr) => parseInt(numStr));
+    if (type === "addMin") {
+      minutesLeft += 1;
+    } else if (type === "subMin") {
+      minutesLeft -= 1;
+    } else if (type === "subSec") {
+      secondsLeft -= 1;
+      console.log("seconds Left:", secondsLeft);
+    }
 
-const updateStartTime = (newStartTime, timeLeft) => {
-  let [minutesLeft, secondsLeft] = timeLeft
-    .split(":")
-    .map((numStr) => parseInt(numStr));
-  let startTime = addMinutes(newStartTime, minutesLeft);
-  startTime = addSeconds(startTime, secondsLeft + 1); // add 1 to make up for display not updating right away
-  return startTime;
+    let [newMinutesLeft, newSecondsLeft] = ["", ""];
+    if (minutesLeft < 10) {
+      newMinutesLeft = `0${minutesLeft}`;
+    } else {
+      newMinutesLeft = `${minutesLeft}`;
+    }
+
+    if (secondsLeft === -1) {
+      newMinutesLeft = minutesLeft - 1;
+      newSecondsLeft = 59;
+    } else if (secondsLeft < 10) {
+      newSecondsLeft = `0${secondsLeft}`;
+    } else {
+      newSecondsLeft = `${secondsLeft}`;
+    }
+    timeLeft = `${newMinutesLeft}:${newSecondsLeft}`;
+    return timeLeft;
+  }
+
+  return state.timeLeft;
 };
 
 const pomodoroReducer = (state = initialState, action) => {
@@ -57,24 +70,18 @@ const pomodoroReducer = (state = initialState, action) => {
       console.log(`Increment ${action.payload}`);
       if (state[action.payload] < 60) {
         let newTime = state[action.payload] + 1;
-        let { timeLeft, startTime } = updateTimeLeft(
-          "+",
-          action.payload,
-          state
-        );
+        let timeLeft = updateTimeLeft("addMin", action.payload, state);
         if (action.payload === "focusTime") {
           return {
             ...state,
             focusTime: newTime,
             timeLeft,
-            startTime,
           };
         }
         return {
           ...state,
           breakTime: newTime,
           timeLeft,
-          startTime,
         };
       }
       return { ...state };
@@ -83,24 +90,18 @@ const pomodoroReducer = (state = initialState, action) => {
       console.log(`Decrement ${action.payload}`);
       if (state[action.payload] > 1) {
         let newTime = state[action.payload] - 1;
-        let { timeLeft, startTime } = updateTimeLeft(
-          "-",
-          action.payload,
-          state
-        );
+        let timeLeft = updateTimeLeft("subMin", action.payload, state);
         if (action.payload === "focusTime") {
           return {
             ...state,
             focusTime: newTime,
             timeLeft,
-            startTime,
           };
         }
         return {
           ...state,
           breakTime: newTime,
           timeLeft,
-          startTime,
         };
       }
       return { ...state };
@@ -108,38 +109,23 @@ const pomodoroReducer = (state = initialState, action) => {
     case START_TIMER: {
       console.log(`Start timer for ${state.timeBlock}!`);
       let timerSelector = action.timerSelector;
-      let startTime = updateStartTime(action.payload, state.timeLeft);
       return {
         ...state,
         started: true,
         timerSelector,
-        startTime,
       };
     }
     case STOP_TIMER:
       console.log(`Stop timer for ${state.timeBlock}`);
       return { ...state, started: false };
     case TICK_TOCK: {
-      let timeLeft = state.timeLeft;
+      console.log(`Tick tock ${action.payload}`);
       let timeBlock = state.timeBlock;
+      let timeLeft = updateTimeLeft("subSec", timeBlock, state);
       if (state.timeLeft === "00:01") {
         console.log(`TIME TO SWITCH ${state.timeLeft}`);
         timeBlock = state.timeBlock === "focusTime" ? "breakTime" : "focusTime"; // update to next timeBlock
-        timeLeft = "00:00";
-        return { ...state, timeBlock, timeLeft };
       }
-      if (state.timeLeft === "00:00") {
-        console.log(`ZERO ${state.timeLeft}`);
-        if (state[timeBlock] < 10) {
-          timeLeft = `0${state[timeBlock]}:00`;
-        } else {
-          timeLeft = `${state[timeBlock]}:00`;
-        }
-        let startTime = addMinutes(new Date(), state[timeBlock]); // need this since startTime is usually set by clicking "start_stop"
-        return { ...state, timeBlock, timeLeft, startTime };
-      }
-      let timeDiff = state.startTime - action.payload.getTime();
-      timeLeft = format(new Date(timeDiff), "mm:ss");
       return { ...state, timeBlock, timeLeft };
     }
     case RESET: {

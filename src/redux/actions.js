@@ -20,13 +20,13 @@ export const decrement = (dial) => ({
 });
 
 export const startTimer = () => {
-  return (dispatch) => {
+  return (dispatch, getState) => {
     const timerSelector = setInterval(() => {
       dispatch(tickTock());
     }, 1000);
     dispatch({
       type: START_TIMER,
-      payload: new Date(),
+      payload: getState().timeLeft,
       timerSelector,
     });
   };
@@ -42,9 +42,9 @@ export const stopTimer = () => {
   };
 };
 
-export const tickTock = () => ({
+export const tickTock = (timeLeft) => ({
   type: TICK_TOCK,
-  payload: new Date(),
+  payload: timeLeft,
 });
 
 export const reset = () => {
