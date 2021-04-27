@@ -52,3 +52,17 @@
 #break-label {
   text-align: center;
 }
+
+/* mobile breakpoint */
+@media (max-width: 480px) {
+  #timer-and-dials {
+    display: flex;
+    flex-direction: column;
+  }
+  #session-increment,
+  #break-increment,
+  #session-decrement,
+  #break-decrement {
+    color: black;
+  }
+}
